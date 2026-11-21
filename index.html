@@ -1,28 +1,183 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Duckhouse</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#f5f5ef">
+    <meta name="description" content="Blake Pember is a software developer building web projects and interactive tools. Explore selected work and get in touch.">
+    <title>Blake Pember — Software Developer</title>
+    <link rel="icon" type="image/png" href="images/favicon.png">
     <link rel="stylesheet" href="styles.css">
 </head>
-
 <body>
-    <section>
-        <div class="projects">
-            <h1> Blake Pember</h1>
-            <p>Projects are currently in progress</p>
-            <ul>
-                <li><a href="duckhouse/">Duckhouse</a></li> 
-                <li><a href=""> Stock Graph Analyzer </a></li>
-            </ul>
-            <button onclick="toggle()">Toggle Dark Mode</button>
-        </div>
-    </section>
+    <header class="site-header">
+        <a class="wordmark" href="#home" aria-label="Blake Pember home">
+            <span class="wordmark-icon" aria-hidden="true">BAP</span>
+            <span>Blake Pember</span>
+        </a>
+        <nav class="site-nav" aria-label="Main navigation">
+            <a href="#work">Work</a>
+            <a href="#resume">Resume</a>
+            <a href="#about">About</a>
+            <a class="nav-contact" href="mailto:blakeapember@gmail.com">Get in touch <span aria-hidden="true">↗</span></a>
+            <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Switch to dark theme" aria-pressed="false">
+                <span aria-hidden="true">◐</span>
+            </button>
+        </nav>
+    </header>
+
+    <main>
+        <section class="hero page-width" id="home" aria-labelledby="hero-title">
+            <div class="hero-copy">
+                <p class="eyebrow"><span class="status-dot" aria-hidden="true"></span> SOFTWARE DEVELOPER · WEB</p>
+                <h1 id="hero-title">Building useful<br>things for the <span class="highlight">web.</span></h1>
+                <p class="hero-description">I’m Blake Pember, a software developer focused on creating thoughtful web experiences. Explore my projects and get in touch about opportunities.</p>
+                <div class="hero-actions">
+                    <a class="button button-primary" href="#work">Explore my work <span aria-hidden="true">↓</span></a>
+                    <a class="text-link" href="mailto:blakeapember@gmail.com">Say hello <span aria-hidden="true">↗</span></a>
+                </div>
+                <p class="hero-note"><span aria-hidden="true">✳</span> Selected project: Duckhouse</p>
+            </div>
+
+            <div class="hero-art" aria-label="A preview of Duckhouse, a chess-inspired game">
+                <div class="art-topline">
+                    <span><span class="live-dot" aria-hidden="true"></span> IN THE WORKS</span>
+                    <span>NO. 001</span>
+                </div>
+                <div class="board-wrap">
+                    <div class="mini-board" aria-hidden="true">
+                        <span class="light-square"><img src="pieces-basic-svg/rook-b.svg" alt=""></span>
+                        <span class="dark-square"><img src="pieces-basic-svg/knight-b.svg" alt=""></span>
+                        <span class="light-square"><img src="pieces-basic-svg/bishop-b.svg" alt=""></span>
+                        <span class="dark-square"><img src="pieces-basic-svg/queen-b.svg" alt=""></span>
+                        <span class="dark-square"><img src="pieces-basic-svg/pawn-b.svg" alt=""></span>
+                        <span class="light-square"><img src="pieces-basic-svg/pawn-b.svg" alt=""></span>
+                        <span class="dark-square"><img src="pieces-basic-svg/pawn-b.svg" alt=""></span>
+                        <span class="light-square"><img src="pieces-basic-svg/pawn-b.svg" alt=""></span>
+                        <span class="light-square"></span>
+                        <span class="dark-square"></span>
+                        <span class="light-square"><img src="pieces-basic-svg/pawn-w.svg" alt=""></span>
+                        <span class="dark-square"></span>
+                        <span class="dark-square"></span>
+                        <span class="light-square"><img src="pieces-basic-svg/pawn-w.svg" alt=""></span>
+                        <span class="dark-square"></span>
+                        <span class="light-square"><img src="pieces-basic-svg/king-w.svg" alt=""></span>
+                    </div>
+                </div>
+                <div class="art-caption">
+                    <div><span class="caption-label">A DIFFERENT KIND OF CHESS</span><strong>Duckhouse</strong></div>
+                    <a href="duckhouse/" aria-label="Explore Duckhouse">↗</a>
+                </div>
+                <span class="art-sparkle sparkle-one" aria-hidden="true">✳</span>
+                <span class="art-sparkle sparkle-two" aria-hidden="true">✳</span>
+            </div>
+        </section>
+
+        <section class="work-section page-width" id="work" aria-labelledby="work-title">
+            <div class="section-heading">
+                <div>
+                    <p class="eyebrow">PROJECTS</p>
+                    <h2 id="work-title">Selected work<span class="heading-period">.</span></h2>
+                </div>
+                <span class="section-count">01 — 03</span>
+            </div>
+
+            <div class="project-grid">
+                <a class="project-card duckhouse-card" href="duckhouse/">
+                    <div class="project-visual visual-duckhouse">
+                        <span class="project-tag"><span class="tag-dot"></span> PLAY IN PROGRESS</span>
+                        <div class="visual-title">Chess,<br>with a twist.</div>
+                        <span class="visual-arrow" aria-hidden="true">↗</span>
+                        <div class="visual-board" aria-hidden="true">
+                            <span></span><span></span><span></span><span></span>
+                            <span></span><span><img src="pieces-basic-svg/knight-w.svg" alt=""></span><span></span><span></span>
+                            <span></span><span></span><span><img src="pieces-basic-svg/pawn-b.svg" alt=""></span><span></span>
+                            <span><img src="pieces-basic-svg/rook-b.svg" alt=""></span><span></span><span></span><span></span>
+                        </div>
+                    </div>
+                    <div class="project-info">
+                        <div><h3>Duckhouse</h3><p>A chess variant that brings duck chess and bughouse together.</p></div>
+                        <span class="project-number">01</span>
+                    </div>
+                </a>
+
+                <div class="project-card upcoming-card">
+                    <div class="project-visual visual-upcoming">
+                        <span class="project-tag"><span class="tag-dot"></span> ON THE IDEAS LIST</span>
+                        <div class="upcoming-mark" aria-hidden="true">↗</div>
+                        <p>Turning numbers<br>into new perspectives.</p>
+                        <span class="upcoming-label">SOMETHING NEW IS TAKING SHAPE</span>
+                    </div>
+                    <div class="project-info">
+                        <div><h3>Stock Graph Analyzer</h3><p>A planned experiment in making market data easier to explore.</p></div>
+                        <span class="project-number">02</span>
+                    </div>
+                </div>
+
+                <div class="project-card upcoming-card">
+                    <div class="project-visual visual-trivia">
+                        <span class="project-tag"><span class="tag-dot"></span> ON THE IDEAS LIST</span>
+                        <div class="trivia-mark" aria-hidden="true">?</div>
+                        <p>Know a little?<br>Play a lot.</p>
+                        <span class="upcoming-label">A TRIVIA GAME IN THE MAKING</span>
+                    </div>
+                    <div class="project-info">
+                        <div><h3>Trivia Game</h3><p>A future game for testing your knowledge, one question at a time.</p></div>
+                        <span class="project-number">03</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="resume-section page-width" id="resume" aria-labelledby="resume-title">
+            <div class="resume-copy">
+                <p class="eyebrow">BACKGROUND &amp; SKILLS</p>
+                <h2 id="resume-title">My resume<span class="heading-period">.</span></h2>
+                <p>Explore my professional background, experience, and skills in the full resume.</p>
+                <div class="resume-actions">
+                    <a class="button button-primary" href="Blake-Pember-Resume.pdf" target="_blank" rel="noopener">View my resume <span aria-hidden="true">↗</span></a>
+                    <a class="resume-download" href="Blake-Pember-Resume.pdf" download>Download PDF <span aria-hidden="true">↓</span></a>
+                </div>
+            </div>
+            <div class="resume-details">
+                <p class="resume-detail-label">CURRENT FOCUS</p>
+                <h3>Building for the web</h3>
+                <p>Developing interactive projects and strengthening my skills through hands-on work.</p>
+                <span class="resume-divider"></span>
+                <p class="resume-detail-label">TECHNOLOGIES</p>
+                <ul class="skill-list" aria-label="Technologies">
+                    <li>HTML</li>
+                    <li>CSS</li>
+                    <li>JavaScript</li>
+                </ul>
+            </div>
+        </section>
+
+        <section class="about-section page-width" id="about" aria-labelledby="about-title">
+            <p class="eyebrow">ABOUT</p>
+            <div class="about-content">
+                <h2 id="about-title">A developer who<br><span class="highlight">likes to build.</span></h2>
+                <div class="about-copy">
+                    <p>I learn by turning ideas into working projects. My current focus is web development, with Duckhouse as an ongoing exploration of interactive game design.</p>
+                    <a class="text-link" href="mailto:blakeapember@gmail.com">Have an idea? Let’s talk <span aria-hidden="true">↗</span></a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer page-width">
+        <a class="wordmark footer-wordmark" href="#home"><span class="wordmark-icon" aria-hidden="true">BAP</span><span>Blake Pember</span></a>
+        <a href="mailto:blakeapember@gmail.com">Get in touch <span aria-hidden="true">↗</span></a>
+    </footer>
+
     <script>
-        function toggle() {
-            document.body.classList.toggle("dark")
-        }
-    </script> 
+        const themeToggle = document.getElementById("theme-toggle");
+        themeToggle.addEventListener("click", () => {
+            const isDark = document.body.classList.toggle("dark");
+            themeToggle.setAttribute("aria-pressed", String(isDark));
+            themeToggle.setAttribute("aria-label", isDark ? "Switch to light theme" : "Switch to dark theme");
+        });
+        document.getElementById("year").textContent = new Date().getFullYear();
+    </script>
 </body>
 </html>

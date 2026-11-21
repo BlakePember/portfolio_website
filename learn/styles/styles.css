@@ -1,0 +1,71 @@
+:root{
+    --bg-dark: hsl(0,0%,90%);
+    --bg: hsl(0,0%,95%);
+    --bg-light: hsl(0,0%,100%);
+    --text: hsl(0,0%,5%);
+    --text-muted: hsl(0,0%,30%);
+    --border: hsl(0,0%,70%);
+    --gradient: linear-gradient(0deg, var(--bg), var(--bg-light));
+    --gradient-hover: linear-gradient(0deg, var(--bg), var(--bg-light));
+    --highlight: hsl(0, 0%, 100%);
+    --border-card: solid 1px var(--bg);
+
+}
+body.dark {
+    --bg-dark: hsl(0,0%,0%);
+    --bg: hsl(0,0%,5%);
+    --bg-light: hsl(0,0%,10%);
+    --text: hsl(0,0,95);
+    --text-muted: hsl(0,0%,70%);
+    --border: hsl(0,0%,30%);
+    --gradient: linear-gradient(0deg, var(--bg), var(--bg-light));
+    --gradient-hover: linear-gradient(0deg, var(--bg), var(--bg-light));
+    --highlight: hsl(0, 0%, 60%);
+    --border-card: solid 1px var(--border);
+    --shadow: 0px 2px 2px hsla(0, 0%, 0%, 0.07),
+     0px 4px 4px hsla(0, 0%, 0%, 0.15);
+}
+.divider {
+    height: 20px;
+}
+
+body{
+    background: var(--bg-dark);
+    color: var(--text-muted);
+}
+
+section{
+    display: flex;
+    min-height: 100vh;
+    justify-content: center;
+    align-items: center;
+}
+.projects {
+    background: var(--gradient);
+    padding: 1.5rem;
+    border-radius: 1rem;
+    border: solid 1px var(--border-card);
+    border-top: solid 1px var(--highlight);
+    box-shadow: var(--shadow);
+}
+button {
+    background: var(--bg-light);
+    padding: 0.5rem 1rem 0.7rem 1rem;
+    color: var(--text);
+    font-weight: 700;
+    border-radius: 0.5rem;
+    margin-top: 1.5rem;
+    border: solid 1px var(--border-card);
+    box-shadow: var(--shadow);
+}
+
+button:hover {
+    background: var(--gradient-hover);
+}
+
+
+
+*{
+    margin: 0;
+    padding: 0;
+}
