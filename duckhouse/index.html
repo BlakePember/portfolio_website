@@ -4,8 +4,22 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content="Duckhouse — Online multiplayer chess variant combining Bughouse Chess and Duck Chess." />
-    <link rel="icon" type="image/png" href="./favicon.png" />
+    <link rel="icon" type="image/png" href="/favicon.png" />
     <title>Duckhouse — Bughouse × Duck Chess</title>
+    <script>
+      // Restore clean SPA routes redirected via GitHub Pages 404.html (e.g. /duckhouse/room/ABC123)
+      (function () {
+        try {
+          var saved = sessionStorage.getItem('duckhouse_redirect');
+          if (saved) {
+            sessionStorage.removeItem('duckhouse_redirect');
+            if (saved.indexOf('/duckhouse') === 0) {
+              history.replaceState(null, '', saved);
+            }
+          }
+        } catch (e) {}
+      })();
+    </script>
   </head>
   <body>
     <div id="root"></div>
@@ -18,8 +32,13 @@
         var isLocal = location.hostname === 'localhost' || location.hostname === '127.0.0.1';
         if (!isRawViteEntry || !isLocal || location.port === '5173') return;
 
-        var devUrl = 'http://localhost:5173/' + (location.hash || '');
-        fetch('http://localhost:5173/api/health')
+        var relPath = location.pathname
+          .replace(/^\/duckhouse\/?/i, '/')
+          .replace(/\/index\.html$/i, '/');
+        if (!relPath.startsWith('/')) relPath = '/' + relPath;
+        var devOrigin = 'http://localhost:5173';
+        var devUrl = devOrigin + relPath;
+        fetch(devOrigin + '/api/health')
           .then(function (r) {
             if (r.ok) location.replace(devUrl);
             else throw new Error('not ready');

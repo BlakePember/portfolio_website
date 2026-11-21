@@ -26,6 +26,7 @@ import {
 } from '../../shared/engine';
 import { chooseBotAction } from '../../shared/bot';
 import { DuckhouseRealtimeClient } from '../services/realtime';
+import { navigatePath, parseRoute } from '../utils/routes';
 import {
   playCaptureSound,
   playDropSound,
@@ -152,9 +153,9 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const setPage = useCallback((nextPage: AppPage) => {
     setPageState(nextPage);
-    if (nextPage === 'home') window.location.hash = '#/';
-    else if (nextPage === 'lobby') window.location.hash = '#/lobby';
-    else if (nextPage === 'practice') window.location.hash = '#/practice';
+    if (nextPage === 'home') navigatePath('/');
+    else if (nextPage === 'lobby') navigatePath('/lobby');
+    else if (nextPage === 'practice') navigatePath('/practice');
   }, []);
 
   const connectAndEnterRoom = useCallback(async (code: string): Promise<boolean> => {
@@ -164,13 +165,12 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
     if (!res.ok) {
       setErrorBanner(res.error || 'Room not found.');
       setPageState('lobby');
+      navigatePath('/lobby', true);
       return false;
     }
     const upper = code.trim().toUpperCase();
     setPageState('room');
-    if (window.location.hash !== `#/room/${upper}`) {
-      window.location.hash = `#/room/${upper}`;
-    }
+    navigatePath(`/room/${upper}`);
     return true;
   }, []);
 
@@ -186,8 +186,10 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
             if (!res.ok) {
               setErrorBanner(res.error || 'Room not found.');
               setPageState('lobby');
+              navigatePath('/lobby', true);
             } else {
               setPageState('room');
+              navigatePath(`/room/${code}`, true);
             }
           });
         }
@@ -201,7 +203,7 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
           prevRoomRef.current = msg.room;
           setRoom(msg.room);
           setPageState('room');
-          window.location.hash = `#/room/${msg.code}`;
+          navigatePath(`/room/${msg.code}`);
           playWinSound();
           void client.connectRoom(msg.code);
         }
@@ -231,9 +233,7 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
           prevRoomRef.current = nextRoom;
           setRoom(nextRoom);
           setPageState('room');
-          if (window.location.hash !== `#/room/${nextRoom.code}`) {
-            window.location.hash = `#/room/${nextRoom.code}`;
-          }
+          navigatePath(`/room/${nextRoom.code}`, true);
         } else if (msg.type === 'game:clocks') {
           setRoom((curr) =>
             curr
@@ -254,7 +254,7 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
         setRoom(null);
         prevRoomRef.current = null;
         setPageState('lobby');
-        window.location.hash = '#/lobby';
+        navigatePath('/lobby', true);
       },
     });
 
@@ -267,13 +267,15 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
     };
   }, [playerId]);
 
-  // Parse hash route for invite links (#/room/CODE)
+  // Parse clean pathname route on mount & browser Back/Forward (popstate)
   useEffect(() => {
-    const handleHash = () => {
-      const hash = window.location.hash || '#/';
-      const roomMatch = hash.match(/^#\/room\/([A-Za-z0-9]{4,10})$/);
-      if (roomMatch) {
-        const code = roomMatch[1].toUpperCase();
+    const syncRouteFromLocation = () => {
+      const parsed = parseRoute(window.location.pathname, window.location.hash);
+      if (parsed.page === 'room') {
+        const code = parsed.roomCode;
+        if (window.location.hash) {
+          navigatePath(`/room/${code}`, true);
+        }
         if (prevRoomRef.current?.code === code) {
           setPageState('room');
           return;
@@ -283,17 +285,20 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
         } else {
           pendingJoinCodeRef.current = code;
         }
-      } else if (hash === '#/lobby') {
+      } else if (parsed.page === 'lobby') {
+        if (window.location.hash) navigatePath('/lobby', true);
         setPageState('lobby');
-      } else if (hash === '#/practice') {
+      } else if (parsed.page === 'practice') {
+        if (window.location.hash) navigatePath('/practice', true);
         setPageState('practice');
-      } else if (hash === '#/' || hash === '') {
+      } else {
+        if (window.location.hash) navigatePath('/', true);
         setPageState('home');
       }
     };
-    handleHash();
-    window.addEventListener('hashchange', handleHash);
-    return () => window.removeEventListener('hashchange', handleHash);
+    syncRouteFromLocation();
+    window.addEventListener('popstate', syncRouteFromLocation);
+    return () => window.removeEventListener('popstate', syncRouteFromLocation);
   }, [connectAndEnterRoom]);
 
   const setPlayerName = useCallback((name: string) => {

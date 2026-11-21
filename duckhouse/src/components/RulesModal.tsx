@@ -1,6 +1,7 @@
 import React from 'react';
 import { Crown, ShieldAlert, Shuffle, Sparkles, X } from 'lucide-react';
 import { useGame } from '../context/GameContext';
+import { assetUrl } from '../utils/routes';
 
 export const RulesModal: React.FC = () => {
   const { showRules, setShowRules } = useGame();
@@ -11,7 +12,7 @@ export const RulesModal: React.FC = () => {
       <div className="dh-modal" onClick={(e) => e.stopPropagation()} role="dialog" aria-modal="true" aria-label="Duckhouse Rules">
         <div className="dh-modal-header">
           <div className="dh-modal-title-row">
-            <img src="./duck.png" alt="" className="dh-modal-duck" />
+            <img src={assetUrl('duck.png')} alt="" className="dh-modal-duck" />
             <div>
               <h2>How to Play Duckhouse</h2>
               <p>Bughouse 2v2 teamwork meets Duck Chess chaos.</p>

@@ -40,10 +40,12 @@ jobs:
       - name: Assemble GitHub Pages Site
         run: |
           mkdir -p _site
-          cp index.html styles.css Blake-Pember-Resume.pdf CNAME _site/ 2>/dev/null || true
+          cp index.html 404.html styles.css Blake-Pember-Resume.pdf CNAME _site/ 2>/dev/null || true
           cp -r icons images learn pieces-basic-svg _site/ 2>/dev/null || true
-          mkdir -p _site/duckhouse
+          mkdir -p _site/duckhouse _site/duckhouse/lobby _site/duckhouse/practice
           cp -r duckhouse/.cloudflare/output/v1/workers/default/assets/* _site/duckhouse/
+          cp _site/duckhouse/index.html _site/duckhouse/lobby/index.html
+          cp _site/duckhouse/index.html _site/duckhouse/practice/index.html
       - name: Setup Pages
         uses: actions/configure-pages@v5
       - name: Upload artifact

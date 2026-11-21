@@ -1,6 +1,7 @@
 import React from 'react';
 import { ArrowRight, Bot, Crown, Globe, Lock, Shuffle, Sparkles, Users } from 'lucide-react';
 import { useGame } from '../context/GameContext';
+import { assetUrl } from '../utils/routes';
 
 export const HomePage: React.FC = () => {
   const { setPage, setShowRules, startPractice, connected, matchmaking } = useGame();
@@ -78,10 +79,10 @@ export const HomePage: React.FC = () => {
                     const light = (r + c) % 2 === 0;
                     return (
                       <div key={idx} className={`dh-mini-sq ${light ? 'light' : 'dark'}`}>
-                        {idx === 1 && <img src="./pieces/king-b.svg" alt="" />}
-                        {idx === 5 && <img src="./duck.png" alt="Duck" className="dh-mini-duck" />}
-                        {idx === 10 && <img src="./pieces/knight-w.svg" alt="" />}
-                        {idx === 14 && <img src="./pieces/queen-w.svg" alt="" />}
+                        {idx === 1 && <img src={assetUrl('pieces/king-b.svg')} alt="" />}
+                        {idx === 5 && <img src={assetUrl('duck.png')} alt="Duck" className="dh-mini-duck" />}
+                        {idx === 10 && <img src={assetUrl('pieces/knight-w.svg')} alt="" />}
+                        {idx === 14 && <img src={assetUrl('pieces/queen-w.svg')} alt="" />}
                       </div>
                     );
                   })}
@@ -90,7 +91,7 @@ export const HomePage: React.FC = () => {
               </div>
 
               <div className="dh-transfer-badge">
-                <img src="./duck.png" alt="Duckhouse Mascot" className="dh-mascot" />
+                <img src={assetUrl('duck.png')} alt="Duckhouse Mascot" className="dh-mascot" />
                 <span>Captures → Partner Pocket</span>
               </div>
 
@@ -103,10 +104,10 @@ export const HomePage: React.FC = () => {
                     const light = (r + c) % 2 === 0;
                     return (
                       <div key={idx} className={`dh-mini-sq ${light ? 'light' : 'dark'}`}>
-                        {idx === 2 && <img src="./pieces/king-w.svg" alt="" />}
-                        {idx === 6 && <img src="./pieces/rook-b.svg" alt="" />}
-                        {idx === 9 && <img src="./duck.png" alt="Duck" className="dh-mini-duck" />}
-                        {idx === 13 && <img src="./pieces/bishop-w.svg" alt="" />}
+                        {idx === 2 && <img src={assetUrl('pieces/king-w.svg')} alt="" />}
+                        {idx === 6 && <img src={assetUrl('pieces/rook-b.svg')} alt="" />}
+                        {idx === 9 && <img src={assetUrl('duck.png')} alt="Duck" className="dh-mini-duck" />}
+                        {idx === 13 && <img src={assetUrl('pieces/bishop-w.svg')} alt="" />}
                       </div>
                     );
                   })}

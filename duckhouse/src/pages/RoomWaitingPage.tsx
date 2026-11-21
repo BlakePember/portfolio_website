@@ -16,6 +16,7 @@ import {
 } from 'lucide-react';
 import { ALL_SEATS, SeatKey } from '../../shared/types';
 import { getSeatLabel, useGame } from '../context/GameContext';
+import { buildInviteUrl } from '../utils/routes';
 import { TeamChat } from '../components/TeamChat';
 
 export const RoomWaitingPage: React.FC = () => {
@@ -46,7 +47,7 @@ export const RoomWaitingPage: React.FC = () => {
   };
 
   const copyLink = () => {
-    const url = `${window.location.origin}${window.location.pathname}#/room/${room.code}`;
+    const url = buildInviteUrl(room.code);
     navigator.clipboard?.writeText(url).catch(() => {});
     setCopiedLink(true);
     setTimeout(() => setCopiedLink(false), 1800);

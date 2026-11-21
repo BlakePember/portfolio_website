@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { BookOpen, Edit3, Gamepad2, Globe, Home, Moon, Sun, Volume2, VolumeX, Check, Wifi, WifiOff } from 'lucide-react';
 import { useGame } from '../context/GameContext';
+import { assetUrl } from '../utils/routes';
 
 export const Navbar: React.FC = () => {
   const {
@@ -34,7 +35,7 @@ export const Navbar: React.FC = () => {
     <header className="dh-navbar">
       <div className="dh-navbar-inner">
         <button className="dh-brand" onClick={() => setPage('home')} type="button">
-          <img src="./favicon.png" alt="Duckhouse" className="dh-brand-logo" />
+          <img src={assetUrl('favicon.png')} alt="Duckhouse" className="dh-brand-logo" />
           <div className="dh-brand-text">
             <span className="dh-brand-title">Duckhouse</span>
             <span className="dh-brand-sub">Bughouse × Duck Chess</span>

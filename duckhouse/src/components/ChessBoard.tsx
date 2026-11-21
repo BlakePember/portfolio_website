@@ -16,6 +16,7 @@ import {
   rowOf,
   toSquare,
 } from '../../shared/engine';
+import { assetUrl } from '../utils/routes';
 
 const PIECE_FILE_MAP: Record<PieceType, string> = {
   p: 'pawn',
@@ -229,7 +230,7 @@ export const ChessBoard: React.FC<ChessBoardProps> = ({
 
                 {piece && (
                   <img
-                    src={`./pieces/${PIECE_FILE_MAP[piece.type]}-${piece.color}.svg`}
+                    src={assetUrl(`pieces/${PIECE_FILE_MAP[piece.type]}-${piece.color}.svg`)}
                     alt={`${piece.color === 'w' ? 'White' : 'Black'} ${PIECE_FILE_MAP[piece.type]}`}
                     className={`dh-piece ${
                       canAct && board.phase === 'chess' && piece.color === board.turn ? 'movable' : ''
@@ -254,13 +255,13 @@ export const ChessBoard: React.FC<ChessBoardProps> = ({
                     }}
                     title="The Duck — blocks movement & drops (Knights jump over it)"
                   >
-                    <img src="./duck.png" alt="Duck" draggable={false} />
+                    <img src={assetUrl('duck.png')} alt="Duck" draggable={false} />
                   </div>
                 )}
 
                 {showDuckGhost && (
                   <div className="dh-duck-ghost" aria-hidden="true">
-                    <img src="./duck.png" alt="" draggable={false} />
+                    <img src={assetUrl('duck.png')} alt="" draggable={false} />
                   </div>
                 )}
 
@@ -290,7 +291,7 @@ export const ChessBoard: React.FC<ChessBoardProps> = ({
                   }}
                 >
                   <img
-                    src={`./pieces/${PIECE_FILE_MAP[pType]}-${board.turn}.svg`}
+                    src={assetUrl(`pieces/${PIECE_FILE_MAP[pType]}-${board.turn}.svg`)}
                     alt={PIECE_FILE_MAP[pType]}
                   />
                 </button>

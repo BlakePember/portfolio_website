@@ -425,8 +425,7 @@ body.dark .button-primary {
     margin-bottom: 29px;
 }
 
-.section-heading h2,
-.about-content h2 {
+.section-heading h2 {
     margin: 9px 0 0;
     font-size: clamp(29px, 3.2vw, 39px);
     font-weight: 630;
@@ -756,31 +755,6 @@ a.project-card:hover .project-visual {
     font-weight: 550;
 }
 
-.about-section {
-    padding-block: 41px 74px;
-    border-top: 1px solid var(--line);
-}
-
-.about-content {
-    display: grid;
-    grid-template-columns: 1fr 0.72fr;
-    align-items: end;
-    gap: 65px;
-    margin-top: 18px;
-}
-
-.about-content h2 {
-    margin: 0;
-    font-size: clamp(30px, 4vw, 46px);
-}
-
-.about-copy p {
-    margin: 0 0 17px;
-    color: var(--muted);
-    font-size: 14px;
-    line-height: 1.85;
-}
-
 .site-footer {
     display: flex;
     min-height: 76px;
@@ -841,10 +815,6 @@ a.project-card:hover .project-visual {
         grid-template-columns: 1fr 0.9fr;
         gap: 28px;
         padding: 30px;
-    }
-
-    .about-content {
-        gap: 30px;
     }
 }
 
@@ -943,29 +913,11 @@ a.project-card:hover .project-visual {
         left: 26px;
     }
 
-    .about-section {
-        padding-block: 35px 52px;
-    }
-
-    .about-content {
-        grid-template-columns: 1fr;
-        gap: 18px;
-        margin-top: 14px;
-    }
-
     .resume-section {
         grid-template-columns: 1fr;
         gap: 25px;
         margin-bottom: 56px;
         padding: 26px 23px;
-    }
-
-    .about-content h2 {
-        font-size: 38px;
-    }
-
-    .about-copy p {
-        font-size: 13px;
     }
 
     .site-footer {

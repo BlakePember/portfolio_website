@@ -36,6 +36,7 @@ interface BotSchedule {
 }
 
 const BOT_NAMES = ['QuackBot', 'MallardAI', 'DrakeEngine', 'DucklingPro', 'PekingGM', 'WaddleBot'];
+const WAITING_RECONNECT_GRACE_MS = 15_000;
 const EMPTY_CLEANUP_DELAY_MS = 3 * 60_000;
 
 function makeSystemMessage(text: string): RoomChatMessage {
@@ -317,7 +318,7 @@ export class RoomDO extends DurableObject<Env> {
       }
 
       case 'room:leave': {
-        await this.removePlayerFromRoom(state, att.playerId, att.name, ws);
+        await this.removePlayerFromRoom(state, att.playerId, att.name, ws, true);
         try {
           ws.close(1000, 'Left room');
         } catch {
@@ -594,11 +595,32 @@ export class RoomDO extends DurableObject<Env> {
 
     const now = Date.now();
     const emptySince = this.loadMetaNumber('empty_since');
-    if (emptySince > 0 && now - emptySince >= EMPTY_CLEANUP_DELAY_MS && this.ctx.getWebSockets().length === 0) {
+    const cleanupDelay = state.game.status === 'waiting' ? WAITING_RECONNECT_GRACE_MS : EMPTY_CLEANUP_DELAY_MS;
+    if (emptySince > 0 && now - emptySince >= cleanupDelay && this.ctx.getWebSockets().length === 0) {
       const code = state.code;
       this.clearAllStorage();
       await this.ctx.storage.deleteAlarm();
       await this.env.LOBBY.getByName('global').removeRoomSummary(code);
+      return;
+    }
+
+    // In waiting rooms, prune any disconnected seat after the grace period if other players remain
+    if (state.game.status === 'waiting') {
+      let pruned = false;
+      for (const seat of ALL_SEATS) {
+        const sp = state.seats[seat];
+        if (sp && !sp.isBot && !sp.connected) {
+          state.seats[seat] = null;
+          state.chat.push(makeSystemMessage(`${sp.name} disconnected from the lobby.`));
+          pruned = true;
+        }
+      }
+      if (pruned) {
+        this.reassignHostIfNeeded(state);
+        this.saveState(state);
+        this.broadcastRoomState(state);
+        await this.syncLobbySummary(state);
+      }
       return;
     }
 
@@ -727,7 +749,8 @@ export class RoomDO extends DurableObject<Env> {
     state: RoomState,
     playerId: string,
     playerName: string,
-    closingWs: WebSocket
+    closingWs: WebSocket,
+    explicitLeave = false
   ): Promise<void> {
     const remainingSockets = this.ctx.getWebSockets().filter((s) => s !== closingWs);
     const hasOtherSocket = remainingSockets.some((s) => this.getAttachment(s)?.playerId === playerId);
@@ -735,14 +758,16 @@ export class RoomDO extends DurableObject<Env> {
 
     const seat = this.findPlayerSeat(state, playerId);
     if (seat) {
-      if (state.game.status === 'waiting') {
+      if (state.game.status === 'waiting' && explicitLeave) {
         state.seats[seat] = null;
         state.chat.push(makeSystemMessage(`${playerName} left the room.`));
         this.reassignHostIfNeeded(state);
       } else {
         const sp = state.seats[seat];
         if (sp) sp.connected = false;
-        state.chat.push(makeSystemMessage(`${playerName} disconnected.`));
+        if (state.game.status !== 'waiting') {
+          state.chat.push(makeSystemMessage(`${playerName} disconnected.`));
+        }
       }
     } else {
       state.spectators = state.spectators.filter((s) => s.id !== playerId);
@@ -753,7 +778,7 @@ export class RoomDO extends DurableObject<Env> {
       return p !== null && !p.isBot && p.connected;
     }) && state.spectators.length === 0;
 
-    if (noHumansConnected && state.game.status === 'waiting') {
+    if (noHumansConnected && state.game.status === 'waiting' && explicitLeave) {
       const code = state.code;
       this.clearAllStorage();
       await this.ctx.storage.deleteAlarm();
@@ -762,11 +787,15 @@ export class RoomDO extends DurableObject<Env> {
     }
 
     if (noHumansConnected) {
-      // Keep finished/playing room briefly for page refresh, then auto-cleanup via alarm
+      // Keep room alive briefly during browser refresh, then auto-cleanup via Durable Object Alarm
+      const delay = state.game.status === 'waiting' ? WAITING_RECONNECT_GRACE_MS : EMPTY_CLEANUP_DELAY_MS;
       this.saveMetaNumber('empty_since', Date.now());
       if (state.game.status !== 'playing') {
-        await this.ctx.storage.setAlarm(Date.now() + EMPTY_CLEANUP_DELAY_MS);
+        await this.ctx.storage.setAlarm(Date.now() + delay);
       }
+    } else if (state.game.status === 'waiting' && !explicitLeave) {
+      // Schedule grace-period pruning for disconnected seat while others stay
+      await this.ctx.storage.setAlarm(Date.now() + WAITING_RECONNECT_GRACE_MS);
     }
 
     this.saveState(state);

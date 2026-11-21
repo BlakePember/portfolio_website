@@ -14,6 +14,7 @@ import {
 } from 'lucide-react';
 import { RoomVisibility, TIME_CONTROLS } from '../../shared/types';
 import { useGame } from '../context/GameContext';
+import { assetUrl } from '../utils/routes';
 
 export const LobbyPage: React.FC = () => {
   const {
@@ -355,7 +356,7 @@ export const LobbyPage: React.FC = () => {
 
         {filteredRooms.length === 0 ? (
           <div className="dh-empty-rooms">
-            <img src="./duck.png" alt="" className="dh-empty-duck" />
+            <img src={assetUrl('duck.png')} alt="" className="dh-empty-duck" />
             <h3>No matching public rooms right now</h3>
             <p>
               {publicRooms.length === 0

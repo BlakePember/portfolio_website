@@ -1,5 +1,6 @@
 import React from 'react';
 import { Color, DroppablePieceType, PocketCounts } from '../../shared/types';
+import { assetUrl } from '../utils/routes';
 
 const PIECE_ORDER: DroppablePieceType[] = ['q', 'r', 'b', 'n', 'p'];
 
@@ -63,7 +64,7 @@ export const PocketTray: React.FC<PocketTrayProps> = ({
               }
             >
               <img
-                src={`./pieces/${PIECE_SVG_NAME[type]}-${color}.svg`}
+                src={assetUrl(`pieces/${PIECE_SVG_NAME[type]}-${color}.svg`)}
                 alt={`${color === 'w' ? 'White' : 'Black'} ${PIECE_SVG_NAME[type]}`}
                 draggable={false}
               />
