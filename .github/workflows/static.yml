@@ -29,20 +29,24 @@ jobs:
         with:
           node-version: "22"
           cache: "npm"
-          cache-dependency-path: "duckhouse/package-lock.json"
-      - name: Build Duckhouse React Frontend
+          cache-dependency-path: |
+            duckhouse/package-lock.json
+            trivia/package-lock.json
+      - name: Test & Build Duckhouse React Frontend
         working-directory: duckhouse
         env:
           VITE_SERVER_URL: ${{ vars.DUCKHOUSE_SERVER_URL || 'https://duckhouse-api.blakepember.workers.dev' }}
         run: |
           npm ci
+          npm test
           npm run build
-      - name: Build Trivia React Frontend
+      - name: Test & Build Trivia React Frontend
         working-directory: trivia
         env:
           VITE_SERVER_URL: ${{ vars.TRIVIA_SERVER_URL || 'https://trivia-api.blakepember.workers.dev' }}
         run: |
           npm ci
+          npm test
           npm run build
       - name: Assemble GitHub Pages Site
         run: |
