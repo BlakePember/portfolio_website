@@ -18,6 +18,11 @@
           sessionStorage.setItem('trivia_redirect', path + window.location.search);
         } catch (e) {}
         window.location.replace('/trivia/');
+      } else if (path === '/language' || path.indexOf('/language/') === 0) {
+        try {
+          sessionStorage.setItem('language_redirect', path + window.location.search);
+        } catch (e) {}
+        window.location.replace('/language/');
       }
     })();
   </script>
@@ -63,6 +68,7 @@
       <a class="primary" href="/">Back to Portfolio</a>
       <a class="secondary" href="/duckhouse/">Play Duckhouse</a>
       <a class="secondary" href="/trivia/">Play Trivia</a>
+      <a class="secondary" href="/language/">Learn Portuguese</a>
     </div>
   </div>
 </body>

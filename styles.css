@@ -438,20 +438,74 @@ body.dark .button-primary {
 }
 
 .section-count {
-    padding-bottom: 6px;
     color: var(--muted);
     font-size: 11px;
     letter-spacing: 0.1em;
 }
 
-.project-grid {
+.section-meta {
+    display: flex;
+    align-items: center;
+    gap: 19px;
+}
+
+.project-controls {
+    display: flex;
+    gap: 7px;
+}
+
+.project-controls[hidden] {
+    display: none;
+}
+
+.carousel-button {
     display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    width: 34px;
+    height: 34px;
+    place-items: center;
+    border: 1px solid var(--line);
+    border-radius: 50%;
+    background: var(--surface);
+    color: var(--ink);
+    cursor: pointer;
+    font-size: 15px;
+    transition: border-color 160ms ease, color 160ms ease, background-color 160ms ease;
+}
+
+.carousel-button:hover {
+    border-color: var(--green);
+    background: var(--green);
+    color: var(--page);
+}
+
+.project-viewport {
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scrollbar-width: none;
+    scroll-snap-type: x mandatory;
+    touch-action: pan-x pan-y;
+    cursor: grab;
+}
+
+.project-viewport::-webkit-scrollbar {
+    display: none;
+}
+
+.project-viewport.is-dragging {
+    cursor: grabbing;
+    scroll-snap-type: none;
+    user-select: none;
+}
+
+.project-grid {
+    display: flex;
     gap: 19px;
 }
 
 .project-card {
+    flex: 0 0 calc((100% - 38px) / 3);
     min-width: 0;
+    scroll-snap-align: start;
 }
 
 a.project-card {
@@ -572,6 +626,45 @@ a.project-card:hover .project-visual {
 
 .visual-trivia .visual-arrow {
     color: #594770;
+}
+
+.visual-language {
+    background:
+        radial-gradient(ellipse at 86% 88%, rgb(245 196 81 / 32%), transparent 50%),
+        repeating-linear-gradient(135deg, transparent 0 28px, rgb(15 122 83 / 5%) 28px 29px),
+        #d9efe3;
+    color: #163d2d;
+}
+
+.visual-language .project-tag,
+.visual-language .visual-arrow {
+    color: #18553d;
+}
+
+.visual-language .upcoming-label {
+    color: #2f6951;
+}
+
+.visual-language > p {
+    position: absolute;
+    bottom: 49px;
+    left: 19px;
+    margin: 0;
+    font-size: 22px;
+    font-weight: 640;
+    letter-spacing: -0.065em;
+    line-height: 1.08;
+}
+
+.language-mark {
+    position: absolute;
+    top: 48px;
+    right: 22px;
+    color: rgb(15 122 83 / 18%);
+    font-size: 86px;
+    font-weight: 760;
+    letter-spacing: -0.08em;
+    line-height: 1;
 }
 
 .upcoming-mark {
@@ -810,9 +903,8 @@ a.project-card:hover .project-visual {
         padding-inline: 19px;
     }
 
-    .project-grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        row-gap: 28px;
+    .project-card {
+        flex-basis: calc((100% - 19px) / 2);
     }
 
     .resume-section {
@@ -882,9 +974,8 @@ a.project-card:hover .project-visual {
         margin-bottom: 22px;
     }
 
-    .project-grid {
-        grid-template-columns: 1fr;
-        gap: 24px;
+    .project-card {
+        flex-basis: 100%;
     }
 
     .project-visual {

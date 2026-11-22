@@ -40,7 +40,7 @@
 
             <div class="hero-art" aria-label="A preview of Duckhouse, a chess-inspired game">
                 <div class="art-topline">
-                    <span><span class="live-dot" aria-hidden="true"></span> CURRENT PROJECT</span>
+                    <span><span class="live-dot" aria-hidden="true"></span> FEATURED PROJECT</span>
                     <span>NO. 001</span>
                 </div>
                 <div class="board-wrap">
@@ -78,10 +78,16 @@
                     <p class="eyebrow">PROJECTS</p>
                     <h2 id="work-title">Selected work<span class="heading-period">.</span></h2>
                 </div>
-                <span class="section-count">01 — 03</span>
+                <div class="section-meta">
+                    <div class="project-controls" role="group" aria-label="Project navigation" hidden>
+                        <button class="carousel-button" type="button" data-direction="-1" aria-label="Previous project">←</button>
+                        <button class="carousel-button" type="button" data-direction="1" aria-label="Next project">→</button>
+                    </div>
+                    <span class="section-count" id="project-count" aria-live="polite" aria-atomic="true">01 / 04</span>
+                </div>
             </div>
 
-            <div class="project-grid">
+            <div class="project-viewport project-grid" role="region" aria-roledescription="carousel" aria-label="Selected projects" tabindex="0">
                 <a class="project-card duckhouse-card" href="duckhouse/">
                     <div class="project-visual visual-duckhouse">
                         <span class="project-tag"><span class="tag-dot"></span> PLAY IN PROGRESS</span>
@@ -100,19 +106,6 @@
                     </div>
                 </a>
 
-                <div class="project-card upcoming-card">
-                    <div class="project-visual visual-upcoming">
-                        <span class="project-tag"><span class="tag-dot"></span> ON THE IDEAS LIST</span>
-                        <div class="upcoming-mark" aria-hidden="true">↗</div>
-                        <p>Turning numbers<br>into new perspectives.</p>
-                        <span class="upcoming-label">SOMETHING NEW IS TAKING SHAPE</span>
-                    </div>
-                    <div class="project-info">
-                        <div><h3>Stock Graph Analyzer</h3><p>A planned experiment in making market data easier to explore.</p></div>
-                        <span class="project-number">02</span>
-                    </div>
-                </div>
-
                 <a class="project-card trivia-card" href="trivia/">
                     <div class="project-visual visual-trivia">
                         <span class="project-tag"><span class="tag-dot"></span> PLAY NOW</span>
@@ -123,9 +116,36 @@
                     </div>
                     <div class="project-info">
                         <div><h3>Trivia Game</h3><p>Solo runs, Geography flag &amp; capital practice, and live multiplayer rooms.</p></div>
+                        <span class="project-number">02</span>
+                    </div>
+                </a>
+
+                <a class="project-card language-card" href="language/">
+                    <div class="project-visual visual-language">
+                        <span class="project-tag"><span class="tag-dot"></span> START LEARNING</span>
+                        <span class="visual-arrow" aria-hidden="true">↗</span>
+                        <div class="language-mark" aria-hidden="true">Olá</div>
+                        <p>Learn a little,<br>every day.</p>
+                        <span class="upcoming-label">LESSONS · FLASHCARDS · VERBS · DIALOGUES</span>
+                    </div>
+                    <div class="project-info">
+                        <div><h3>Fala! — Brazilian Portuguese</h3><p>Interactive Brazilian Portuguese lessons, SM-2 flashcards, verb drills, real dialogues, and audio.</p></div>
                         <span class="project-number">03</span>
                     </div>
                 </a>
+
+                <div class="project-card upcoming-card">
+                    <div class="project-visual visual-upcoming">
+                        <span class="project-tag"><span class="tag-dot"></span> ON THE IDEAS LIST</span>
+                        <div class="upcoming-mark" aria-hidden="true">↗</div>
+                        <p>Turning numbers<br>into new perspectives.</p>
+                        <span class="upcoming-label">SOMETHING NEW IS TAKING SHAPE</span>
+                    </div>
+                    <div class="project-info">
+                        <div><h3>Stock Graph Analyzer</h3><p>A planned experiment in making market data easier to explore.</p></div>
+                        <span class="project-number">04</span>
+                    </div>
+                </div>
             </div>
         </section>
 
@@ -167,7 +187,180 @@
             themeToggle.setAttribute("aria-pressed", String(isDark));
             themeToggle.setAttribute("aria-label", isDark ? "Switch to light theme" : "Switch to dark theme");
         });
-        document.getElementById("year").textContent = new Date().getFullYear();
+        const year = document.getElementById("year");
+        if (year) year.textContent = new Date().getFullYear();
+
+        const projectViewport = document.querySelector(".project-viewport");
+        const projectTrack = document.querySelector(".project-grid");
+        const projectCount = document.getElementById("project-count");
+        const projectControls = document.querySelector(".project-controls");
+
+        if (projectViewport && projectTrack && projectCount && projectControls) {
+            const projectCards = Array.from(projectTrack.children);
+            const projectTotal = projectCards.length;
+            const previousButton = projectControls.querySelector('[data-direction="-1"]');
+            const nextButton = projectControls.querySelector('[data-direction="1"]');
+
+            if (projectTotal > 1 && previousButton && nextButton) {
+                const makeClone = (card) => {
+                    const clone = card.cloneNode(true);
+                    clone.setAttribute("aria-hidden", "true");
+                    clone.setAttribute("inert", "");
+                    clone.classList.add("project-card-clone");
+                    return clone;
+                };
+                projectTrack.prepend(...projectCards.map(makeClone));
+                projectTrack.append(...projectCards.map(makeClone));
+
+                const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+                let activeProject = 0;
+                let settleTimer;
+                let navigationFallbackTimer;
+                let isNavigatingWithControls = false;
+
+                const slideLeft = (slide) => {
+                    const viewportLeft = projectViewport.getBoundingClientRect().left;
+                    return projectViewport.scrollLeft + slide.getBoundingClientRect().left - viewportLeft;
+                };
+                const updateCount = () => {
+                    projectCount.textContent = `${String(activeProject + 1).padStart(2, "0")} / ${String(projectTotal).padStart(2, "0")}`;
+                };
+                const scrollToSlide = (slide, behavior) => {
+                    projectViewport.scrollTo({
+                        left: slideLeft(slide),
+                        behavior: prefersReducedMotion.matches ? "auto" : behavior
+                    });
+                };
+                const findNearestSlide = () => {
+                    const viewportLeft = projectViewport.getBoundingClientRect().left;
+                    let nearestIndex = 0;
+                    let nearestDistance = Infinity;
+
+                    Array.from(projectTrack.children).forEach((slide, index) => {
+                        const distance = Math.abs(slide.getBoundingClientRect().left - viewportLeft);
+                        if (distance < nearestDistance) {
+                            nearestIndex = index;
+                            nearestDistance = distance;
+                        }
+                    });
+
+                    return nearestIndex;
+                };
+                const syncActiveProject = () => {
+                    const nearestIndex = findNearestSlide();
+                    if (nearestIndex < projectTotal) {
+                        activeProject = nearestIndex;
+                        scrollToSlide(slides[projectTotal + activeProject], "auto");
+                    } else if (nearestIndex >= projectTotal * 2) {
+                        activeProject = nearestIndex % projectTotal;
+                        scrollToSlide(slides[projectTotal + activeProject], "auto");
+                    } else {
+                        activeProject = nearestIndex - projectTotal;
+                    }
+                    updateCount();
+                };
+                const finishControlNavigation = () => {
+                    window.clearTimeout(navigationFallbackTimer);
+                    isNavigatingWithControls = false;
+                    syncActiveProject();
+                };
+
+                projectCards.forEach((card, index) => {
+                    const title = card.querySelector("h3").textContent.trim();
+                    card.setAttribute("role", "group");
+                    card.setAttribute("aria-roledescription", "slide");
+                    card.setAttribute("aria-label", `${index + 1} of ${projectTotal}: ${title}`);
+                });
+
+                const slides = Array.from(projectTrack.children);
+                projectViewport.scrollLeft = slideLeft(slides[projectTotal]);
+                projectControls.hidden = false;
+
+                const moveProject = (direction) => {
+                    const nextIndex = activeProject + direction;
+                    let targetIndex;
+
+                    window.clearTimeout(settleTimer);
+                    window.clearTimeout(navigationFallbackTimer);
+                    isNavigatingWithControls = true;
+
+                    if (nextIndex < 0) {
+                        activeProject = projectTotal - 1;
+                        targetIndex = projectTotal - 1;
+                    } else if (nextIndex >= projectTotal) {
+                        activeProject = 0;
+                        targetIndex = projectTotal * 2;
+                    } else {
+                        activeProject = nextIndex;
+                        targetIndex = projectTotal + activeProject;
+                    }
+
+                    updateCount();
+                    scrollToSlide(slides[targetIndex], "smooth");
+                    navigationFallbackTimer = window.setTimeout(finishControlNavigation, 1500);
+                };
+
+                previousButton.addEventListener("click", () => moveProject(-1));
+                nextButton.addEventListener("click", () => moveProject(1));
+
+                projectViewport.addEventListener("scroll", () => {
+                    window.clearTimeout(settleTimer);
+                    if (isNavigatingWithControls) {
+                        settleTimer = window.setTimeout(finishControlNavigation, 250);
+                    } else {
+                        settleTimer = window.setTimeout(syncActiveProject, 120);
+                    }
+                });
+
+                window.addEventListener("resize", () => {
+                    window.clearTimeout(settleTimer);
+                    window.clearTimeout(navigationFallbackTimer);
+                    isNavigatingWithControls = false;
+                    scrollToSlide(slides[projectTotal + activeProject], "auto");
+                });
+
+                let dragStartX = 0;
+                let dragStartScroll = 0;
+                let isDragging = false;
+                let didDrag = false;
+
+                projectViewport.addEventListener("pointerdown", (event) => {
+                    if (event.pointerType !== "mouse" || event.button !== 0) return;
+                    window.clearTimeout(settleTimer);
+                    window.clearTimeout(navigationFallbackTimer);
+                    isNavigatingWithControls = false;
+                    isDragging = true;
+                    didDrag = false;
+                    dragStartX = event.clientX;
+                    dragStartScroll = projectViewport.scrollLeft;
+                    projectViewport.classList.add("is-dragging");
+                });
+
+                window.addEventListener("pointermove", (event) => {
+                    if (!isDragging) return;
+                    const distance = event.clientX - dragStartX;
+                    if (Math.abs(distance) > 5) didDrag = true;
+                    if (didDrag) {
+                        projectViewport.scrollLeft = dragStartScroll - distance;
+                        event.preventDefault();
+                    }
+                });
+
+                const endDrag = () => {
+                    if (!isDragging) return;
+                    isDragging = false;
+                    projectViewport.classList.remove("is-dragging");
+                };
+                window.addEventListener("pointerup", endDrag);
+                window.addEventListener("pointercancel", endDrag);
+                projectViewport.addEventListener("click", (event) => {
+                    if (!didDrag) return;
+                    event.preventDefault();
+                    event.stopPropagation();
+                    didDrag = false;
+                }, true);
+            }
+        }
     </script>
 </body>
 </html>
