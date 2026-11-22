@@ -1,4 +1,4 @@
-# Build Duckhouse React app and deploy static content to GitHub Pages
+# Deploy static portfolio site to GitHub Pages
 name: Deploy static content to Pages
 
 on:
@@ -24,58 +24,11 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: "22"
-          cache: "npm"
-          cache-dependency-path: |
-            duckhouse/package-lock.json
-            trivia/package-lock.json
-            language/package-lock.json
-      - name: Test & Build Duckhouse React Frontend
-        working-directory: duckhouse
-        env:
-          VITE_SERVER_URL: ${{ vars.DUCKHOUSE_SERVER_URL || 'https://duckhouse-api.blakepember.workers.dev' }}
-        run: |
-          npm ci
-          npm test
-          npm run build
-      - name: Test & Build Trivia React Frontend
-        working-directory: trivia
-        env:
-          VITE_SERVER_URL: ${{ vars.TRIVIA_SERVER_URL || 'https://trivia-api.blakepember.workers.dev' }}
-        run: |
-          npm ci
-          npm test
-          npm run build
-      - name: Test & Build Language React Frontend
-        working-directory: language
-        run: |
-          npm ci
-          npm test
-          npm run build
       - name: Assemble GitHub Pages Site
         run: |
           mkdir -p _site
           cp index.html 404.html styles.css Blake-Pember-Resume.pdf CNAME _site/ 2>/dev/null || true
           cp -r icons images learn pieces-basic-svg _site/ 2>/dev/null || true
-          mkdir -p _site/duckhouse _site/duckhouse/lobby _site/duckhouse/practice
-          cp -r duckhouse/.cloudflare/output/v1/workers/default/assets/* _site/duckhouse/
-          cp _site/duckhouse/index.html _site/duckhouse/lobby/index.html
-          cp _site/duckhouse/index.html _site/duckhouse/practice/index.html
-          mkdir -p _site/trivia _site/trivia/solo _site/trivia/practice _site/trivia/multiplayer
-          cp -r trivia/.cloudflare/output/v1/workers/default/assets/* _site/trivia/
-          cp _site/trivia/index.html _site/trivia/solo/index.html
-          cp _site/trivia/index.html _site/trivia/practice/index.html
-          cp _site/trivia/index.html _site/trivia/multiplayer/index.html
-          mkdir -p _site/language _site/language/flashcards _site/language/verbs _site/language/conversations _site/language/guide _site/language/lesson
-          cp -r language/dist/* _site/language/
-          cp _site/language/index.html _site/language/flashcards/index.html
-          cp _site/language/index.html _site/language/verbs/index.html
-          cp _site/language/index.html _site/language/conversations/index.html
-          cp _site/language/index.html _site/language/guide/index.html
-          cp _site/language/index.html _site/language/lesson/index.html
       - name: Setup Pages
         uses: actions/configure-pages@v5
       - name: Upload artifact

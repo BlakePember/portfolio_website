@@ -5,24 +5,23 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Page Not Found — Blake Pember</title>
   <script>
-    // GitHub Pages SPA fallback for clean Duckhouse and Trivia URLs (e.g. /duckhouse/room/ABC123, /trivia/practice)
+    // Forward legacy subpath URLs to each project's dedicated Cloudflare Workers subdomain
     (function () {
       var path = window.location.pathname;
-      if (path === '/duckhouse' || path.indexOf('/duckhouse/') === 0) {
-        try {
-          sessionStorage.setItem('duckhouse_redirect', path + window.location.search);
-        } catch (e) {}
-        window.location.replace('/duckhouse/');
-      } else if (path === '/trivia' || path.indexOf('/trivia/') === 0) {
-        try {
-          sessionStorage.setItem('trivia_redirect', path + window.location.search);
-        } catch (e) {}
-        window.location.replace('/trivia/');
-      } else if (path === '/language' || path.indexOf('/language/') === 0) {
-        try {
-          sessionStorage.setItem('language_redirect', path + window.location.search);
-        } catch (e) {}
-        window.location.replace('/language/');
+      var suffix = window.location.search + window.location.hash;
+      var redirects = [
+        { prefix: '/duckhouse', target: 'https://duckhouse.blakepember.net' },
+        { prefix: '/trivia', target: 'https://trivia.blakepember.net' },
+        { prefix: '/language', target: 'https://fala.blakepember.net' },
+        { prefix: '/fala', target: 'https://fala.blakepember.net' },
+      ];
+      for (var i = 0; i < redirects.length; i++) {
+        var r = redirects[i];
+        if (path === r.prefix || path.indexOf(r.prefix + '/') === 0) {
+          var rest = path.slice(r.prefix.length) || '/';
+          window.location.replace(r.target + rest + suffix);
+          return;
+        }
       }
     })();
   </script>
@@ -66,9 +65,9 @@
     <p>That page doesn’t exist on blakepember.net.</p>
     <div class="actions">
       <a class="primary" href="/">Back to Portfolio</a>
-      <a class="secondary" href="/duckhouse/">Play Duckhouse</a>
-      <a class="secondary" href="/trivia/">Play Trivia</a>
-      <a class="secondary" href="/language/">Learn Portuguese</a>
+      <a class="secondary" href="https://duckhouse.blakepember.net/">Play Duckhouse</a>
+      <a class="secondary" href="https://trivia.blakepember.net/">Play Trivia</a>
+      <a class="secondary" href="https://fala.blakepember.net/">Learn Portuguese</a>
     </div>
   </div>
 </body>
