@@ -37,6 +37,13 @@ jobs:
         run: |
           npm ci
           npm run build
+      - name: Build Trivia React Frontend
+        working-directory: trivia
+        env:
+          VITE_SERVER_URL: ${{ vars.TRIVIA_SERVER_URL || 'https://trivia-api.blakepember.workers.dev' }}
+        run: |
+          npm ci
+          npm run build
       - name: Assemble GitHub Pages Site
         run: |
           mkdir -p _site
@@ -46,6 +53,11 @@ jobs:
           cp -r duckhouse/.cloudflare/output/v1/workers/default/assets/* _site/duckhouse/
           cp _site/duckhouse/index.html _site/duckhouse/lobby/index.html
           cp _site/duckhouse/index.html _site/duckhouse/practice/index.html
+          mkdir -p _site/trivia _site/trivia/solo _site/trivia/practice _site/trivia/multiplayer
+          cp -r trivia/.cloudflare/output/v1/workers/default/assets/* _site/trivia/
+          cp _site/trivia/index.html _site/trivia/solo/index.html
+          cp _site/trivia/index.html _site/trivia/practice/index.html
+          cp _site/trivia/index.html _site/trivia/multiplayer/index.html
       - name: Setup Pages
         uses: actions/configure-pages@v5
       - name: Upload artifact

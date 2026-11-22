@@ -570,6 +570,10 @@ a.project-card:hover .project-visual {
     color: #594770;
 }
 
+.visual-trivia .visual-arrow {
+    color: #594770;
+}
+
 .upcoming-mark {
     position: absolute;
     top: 60px;
