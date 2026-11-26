@@ -30,7 +30,7 @@ body {
     transition: background-color 180ms ease, color 180ms ease;
 }
 
-body.dark {
+:root.dark {
     color-scheme: dark;
     --page: #171d19;
     --surface: #202822;
@@ -223,7 +223,7 @@ a:focus-visible {
     color: #fff;
 }
 
-body.dark .button-primary {
+:root.dark .button-primary {
     color: #192019;
 }
 

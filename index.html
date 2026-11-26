@@ -6,7 +6,20 @@
     <meta name="theme-color" content="#f5f5ef">
     <meta name="description" content="Blake Pember is a software developer building web projects and interactive tools. Explore selected work and get in touch.">
     <title>Blake Pember — Software Developer</title>
-    <link rel="icon" type="image/png" href="images/favicon.png">
+    <link id="favicon" rel="icon" type="image/svg+xml" href="images/favicon.svg">
+    <link rel="alternate icon" type="image/png" sizes="180x180" href="images/favicon.png">
+    <link rel="apple-touch-icon" href="images/favicon.png">
+    <script>
+        try {
+            if (localStorage.getItem("theme") === "dark") {
+                document.documentElement.classList.add("dark");
+                const themeColor = document.querySelector('meta[name="theme-color"]');
+                if (themeColor) themeColor.setAttribute("content", "#171d19");
+                const favicon = document.getElementById("favicon");
+                if (favicon) favicon.setAttribute("href", "images/favicon-dark.svg");
+            }
+        } catch {}
+    </script>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -124,7 +137,7 @@
                     <div class="project-visual visual-language">
                         <span class="project-tag"><span class="tag-dot"></span> START LEARNING</span>
                         <span class="visual-arrow" aria-hidden="true">↗</span>
-                        <div class="language-mark" aria-hidden="true">Olá</div>
+                        <div class="language-mark" aria-hidden="true">Oi</div>
                         <p>Learn a little,<br>every day.</p>
                         <span class="upcoming-label">LESSONS · FLASHCARDS · VERBS · DIALOGUES</span>
                     </div>
@@ -181,11 +194,41 @@
     </footer>
 
     <script>
+        const THEME_STORAGE_KEY = "theme";
         const themeToggle = document.getElementById("theme-toggle");
-        themeToggle.addEventListener("click", () => {
-            const isDark = document.body.classList.toggle("dark");
+        const themeColorMeta = document.querySelector('meta[name="theme-color"]');
+        const faviconLink = document.getElementById("favicon");
+
+        const syncThemeUI = (isDark) => {
             themeToggle.setAttribute("aria-pressed", String(isDark));
             themeToggle.setAttribute("aria-label", isDark ? "Switch to light theme" : "Switch to dark theme");
+            if (themeColorMeta) {
+                themeColorMeta.setAttribute("content", isDark ? "#171d19" : "#f5f5ef");
+            }
+            if (faviconLink) {
+                faviconLink.setAttribute("href", isDark ? "images/favicon-dark.svg" : "images/favicon.svg");
+            }
+        };
+
+        const applyTheme = (isDark) => {
+            document.documentElement.classList.toggle("dark", isDark);
+            syncThemeUI(isDark);
+        };
+
+        syncThemeUI(document.documentElement.classList.contains("dark"));
+
+        themeToggle.addEventListener("click", () => {
+            const isDark = !document.documentElement.classList.contains("dark");
+            applyTheme(isDark);
+            try {
+                localStorage.setItem(THEME_STORAGE_KEY, isDark ? "dark" : "light");
+            } catch {}
+        });
+
+        window.addEventListener("storage", (event) => {
+            if (event.key === THEME_STORAGE_KEY || event.key === null) {
+                applyTheme(event.newValue === "dark");
+            }
         });
         const year = document.getElementById("year");
         if (year) year.textContent = new Date().getFullYear();
