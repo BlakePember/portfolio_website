@@ -196,8 +196,9 @@ a:focus-visible {
 
 .hero-actions {
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
-    gap: 26px;
+    gap: 14px;
     margin-top: 30px;
 }
 
@@ -211,7 +212,7 @@ a:focus-visible {
     border-radius: 8px;
     font-size: 13px;
     font-weight: 650;
-    transition: transform 160ms ease, background-color 160ms ease;
+    transition: transform 160ms ease, background-color 160ms ease, border-color 160ms ease, color 160ms ease;
 }
 
 .button:hover {
@@ -229,6 +230,17 @@ a:focus-visible {
 
 .button-primary:hover {
     background: #476d57;
+}
+
+.button-secondary {
+    border: 1px solid var(--line);
+    background: var(--surface);
+    color: var(--ink);
+}
+
+.button-secondary:hover {
+    border-color: var(--green);
+    color: var(--green);
 }
 
 .text-link {
