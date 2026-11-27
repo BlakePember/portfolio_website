@@ -6,7 +6,20 @@
     <meta name="theme-color" content="#f5f5ef">
     <meta name="description" content="Blake Pember is a software developer building web projects and interactive tools. Explore selected work and get in touch.">
     <title>Blake Pember — Software Developer</title>
-    <link rel="icon" type="image/png" href="images/favicon.png">
+    <link id="favicon" rel="icon" type="image/svg+xml" href="images/favicon.svg">
+    <link rel="alternate icon" type="image/png" sizes="180x180" href="images/favicon.png">
+    <link rel="apple-touch-icon" href="images/favicon.png">
+    <script>
+        try {
+            if (localStorage.getItem("theme") === "dark") {
+                document.documentElement.classList.add("dark");
+                const themeColor = document.querySelector('meta[name="theme-color"]');
+                if (themeColor) themeColor.setAttribute("content", "#171d19");
+                const favicon = document.getElementById("favicon");
+                if (favicon) favicon.setAttribute("href", "images/favicon-dark.svg");
+            }
+        } catch {}
+    </script>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -18,6 +31,7 @@
         <nav class="site-nav" aria-label="Main navigation">
             <a href="#work">Work</a>
             <a href="#resume">Resume</a>
+            <a href="https://github.com/BlakePember" target="_blank" rel="noopener noreferrer">GitHub <span class="nav-arrow" aria-hidden="true">↗</span></a>
             <a class="nav-contact" href="mailto:blakeapember@gmail.com">Get in touch <span aria-hidden="true">↗</span></a>
             <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Switch to dark theme" aria-pressed="false">
                 <span aria-hidden="true">◐</span>
@@ -33,7 +47,7 @@
                 <p class="hero-description">I'm Blake Pember, a computer engineer focused on creating interesting web experiences. Explore my projects below.</p>
                 <div class="hero-actions">
                     <a class="button button-primary" href="#work">Explore my work <span aria-hidden="true">↓</span></a>
-                    <a class="text-link" href="mailto:blakeapember@gmail.com">Say hello <span aria-hidden="true">↗</span></a>
+                    <a class="button button-secondary" href="#resume">View resume <span aria-hidden="true">↓</span></a>
                 </div>
                 <p class="hero-note"><span aria-hidden="true">✳</span> Selected project: Duckhouse</p>
             </div>
@@ -83,7 +97,7 @@
                         <button class="carousel-button" type="button" data-direction="-1" aria-label="Previous project">←</button>
                         <button class="carousel-button" type="button" data-direction="1" aria-label="Next project">→</button>
                     </div>
-                    <span class="section-count" id="project-count" aria-live="polite" aria-atomic="true">01 / 04</span>
+                    <span class="section-count" id="project-count" aria-live="polite" aria-atomic="true">01 / 05</span>
                 </div>
             </div>
 
@@ -106,6 +120,38 @@
                     </div>
                 </a>
 
+                <article class="project-card extension-card">
+                    <a class="project-card-main" href="tab-group-expander/">
+                        <div class="project-visual visual-extension">
+                            <span class="project-tag"><span class="tag-dot"></span> CHROME EXTENSION</span>
+                            <div class="visual-title">Tab groups,<br>under control.</div>
+                            <span class="visual-arrow" aria-hidden="true">↗</span>
+                            <div class="visual-tabstrip" aria-hidden="true">
+                                <div class="mini-tab mini-tab-pinned"><span></span></div>
+                                <div class="mini-group">
+                                    <span class="mini-group-pill">Work</span>
+                                    <div class="mini-tab"><span></span></div>
+                                    <div class="mini-tab is-active"><span></span></div>
+                                    <span class="mini-drag-handle"></span>
+                                </div>
+                                <div class="mini-tab mini-tab-target"><span></span></div>
+                            </div>
+                            <span class="upcoming-label">SHORTCUTS · SIDE PANEL</span>
+                        </div>
+                        <div class="project-info">
+                            <div><h3>TabGroup Expander</h3><p>A Manifest V3 Chrome extension to expand and shrink tab groups via keyboard shortcuts or a real-time drag Side Panel.</p></div>
+                            <span class="project-number">02</span>
+                        </div>
+                    </a>
+                    <div class="project-card-meta">
+                        <a class="card-meta-link" href="https://github.com/BlakePember/tab-group-expander" target="_blank" rel="noopener noreferrer">GitHub <span aria-hidden="true">↗</span></a>
+                        <!-- TODO: Replace this disabled badge with the live Chrome Web Store link once Google approves the listing:
+                        <a class="card-meta-link" href="https://chromewebstore.google.com/detail/YOUR-EXTENSION-ID" target="_blank" rel="noopener noreferrer">Chrome Web Store <span aria-hidden="true">↗</span></a>
+                        -->
+                        <span class="store-badge" aria-disabled="true">Chrome Web Store (Pending Review)</span>
+                    </div>
+                </article>
+
                 <a class="project-card trivia-card" href="https://trivia.blakepember.net/">
                     <div class="project-visual visual-trivia">
                         <span class="project-tag"><span class="tag-dot"></span> PLAY NOW</span>
@@ -116,7 +162,7 @@
                     </div>
                     <div class="project-info">
                         <div><h3>Trivia Game</h3><p>Solo runs, Geography flag &amp; capital practice, and live multiplayer rooms.</p></div>
-                        <span class="project-number">02</span>
+                        <span class="project-number">03</span>
                     </div>
                 </a>
 
@@ -124,13 +170,13 @@
                     <div class="project-visual visual-language">
                         <span class="project-tag"><span class="tag-dot"></span> START LEARNING</span>
                         <span class="visual-arrow" aria-hidden="true">↗</span>
-                        <div class="language-mark" aria-hidden="true">Olá</div>
+                        <div class="language-mark" aria-hidden="true">Oi</div>
                         <p>Learn a little,<br>every day.</p>
                         <span class="upcoming-label">LESSONS · FLASHCARDS · VERBS · DIALOGUES</span>
                     </div>
                     <div class="project-info">
                         <div><h3>Fala! — Brazilian Portuguese</h3><p>Interactive Brazilian Portuguese lessons, SM-2 flashcards, verb drills, real dialogues, and audio.</p></div>
-                        <span class="project-number">03</span>
+                        <span class="project-number">04</span>
                     </div>
                 </a>
 
@@ -143,7 +189,7 @@
                     </div>
                     <div class="project-info">
                         <div><h3>Stock Graph Analyzer</h3><p>A planned experiment in making market data easier to explore.</p></div>
-                        <span class="project-number">04</span>
+                        <span class="project-number">05</span>
                     </div>
                 </div>
             </div>
@@ -177,15 +223,48 @@
 
     <footer class="site-footer page-width">
         <a class="wordmark footer-wordmark" href="#home"><span class="wordmark-icon" aria-hidden="true">BAP</span><span>Blake Pember</span></a>
-        <a href="mailto:blakeapember@gmail.com">Get in touch <span aria-hidden="true">↗</span></a>
+        <div class="footer-links">
+            <a href="https://github.com/BlakePember" target="_blank" rel="noopener noreferrer">GitHub <span aria-hidden="true">↗</span></a>
+            <a href="mailto:blakeapember@gmail.com">Get in touch <span aria-hidden="true">↗</span></a>
+        </div>
     </footer>
 
     <script>
+        const THEME_STORAGE_KEY = "theme";
         const themeToggle = document.getElementById("theme-toggle");
-        themeToggle.addEventListener("click", () => {
-            const isDark = document.body.classList.toggle("dark");
+        const themeColorMeta = document.querySelector('meta[name="theme-color"]');
+        const faviconLink = document.getElementById("favicon");
+
+        const syncThemeUI = (isDark) => {
             themeToggle.setAttribute("aria-pressed", String(isDark));
             themeToggle.setAttribute("aria-label", isDark ? "Switch to light theme" : "Switch to dark theme");
+            if (themeColorMeta) {
+                themeColorMeta.setAttribute("content", isDark ? "#171d19" : "#f5f5ef");
+            }
+            if (faviconLink) {
+                faviconLink.setAttribute("href", isDark ? "images/favicon-dark.svg" : "images/favicon.svg");
+            }
+        };
+
+        const applyTheme = (isDark) => {
+            document.documentElement.classList.toggle("dark", isDark);
+            syncThemeUI(isDark);
+        };
+
+        syncThemeUI(document.documentElement.classList.contains("dark"));
+
+        themeToggle.addEventListener("click", () => {
+            const isDark = !document.documentElement.classList.contains("dark");
+            applyTheme(isDark);
+            try {
+                localStorage.setItem(THEME_STORAGE_KEY, isDark ? "dark" : "light");
+            } catch {}
+        });
+
+        window.addEventListener("storage", (event) => {
+            if (event.key === THEME_STORAGE_KEY || event.key === null) {
+                applyTheme(event.newValue === "dark");
+            }
         });
         const year = document.getElementById("year");
         if (year) year.textContent = new Date().getFullYear();
