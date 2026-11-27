@@ -28,7 +28,7 @@ jobs:
         run: |
           mkdir -p _site
           cp index.html 404.html styles.css Blake-Pember-Resume.pdf CNAME _site/ 2>/dev/null || true
-          cp -r icons images learn pieces-basic-svg _site/ 2>/dev/null || true
+          cp -r icons images learn pieces-basic-svg tab-group-expander _site/ 2>/dev/null || true
       - name: Setup Pages
         uses: actions/configure-pages@v6
       - name: Upload artifact

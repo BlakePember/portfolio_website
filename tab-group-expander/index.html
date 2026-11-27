@@ -1,0 +1,220 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#f5f5ef">
+    <meta name="description" content="TabGroup Expander — A Manifest V3 Chrome extension to expand and shrink Chrome tab groups via keyboard shortcuts or by dragging group borders in a real-time Side Panel.">
+    <title>TabGroup Expander — Blake Pember</title>
+    <link id="favicon" rel="icon" type="image/svg+xml" href="../images/favicon.svg">
+    <link rel="alternate icon" type="image/png" sizes="180x180" href="../images/favicon.png">
+    <link rel="apple-touch-icon" href="../images/favicon.png">
+    <script>
+        try {
+            if (localStorage.getItem("theme") === "dark") {
+                document.documentElement.classList.add("dark");
+                const themeColor = document.querySelector('meta[name="theme-color"]');
+                if (themeColor) themeColor.setAttribute("content", "#171d19");
+                const favicon = document.getElementById("favicon");
+                if (favicon) favicon.setAttribute("href", "../images/favicon-dark.svg");
+            }
+        } catch {}
+    </script>
+    <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+    <header class="site-header">
+        <a class="wordmark" href="../" aria-label="Blake Pember home">
+            <span class="wordmark-icon" aria-hidden="true">BAP</span>
+            <span>Blake Pember</span>
+        </a>
+        <nav class="site-nav" aria-label="Main navigation">
+            <a href="../#work">Work</a>
+            <a href="../#resume">Resume</a>
+            <a href="https://github.com/BlakePember" target="_blank" rel="noopener noreferrer">GitHub <span class="nav-arrow" aria-hidden="true">↗</span></a>
+            <a class="nav-contact" href="mailto:blakeapember@gmail.com">Get in touch <span aria-hidden="true">↗</span></a>
+            <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Switch to dark theme" aria-pressed="false">
+                <span aria-hidden="true">◐</span>
+            </button>
+        </nav>
+    </header>
+
+    <main class="project-page page-width">
+        <a class="back-link" href="../#work"><span aria-hidden="true">←</span> Back to selected work</a>
+
+        <section class="project-hero" aria-labelledby="project-title">
+            <div class="project-hero-copy">
+                <p class="eyebrow"><span class="status-dot" aria-hidden="true"></span> Chrome Extension · Manifest V3</p>
+                <h1 id="project-title">TabGroup Expander<span class="heading-period">.</span></h1>
+                <p class="project-summary">A Manifest V3 Chrome extension that lets users expand and shrink Chrome tab groups via keyboard shortcuts or by dragging group borders in a real-time Side Panel.</p>
+
+                <ul class="skill-list project-tags" aria-label="Tech stack">
+                    <li>JavaScript (ES Modules)</li>
+                    <li>HTML/CSS</li>
+                    <li>Chrome Extensions API (Manifest V3)</li>
+                </ul>
+
+                <div class="project-actions">
+                    <a class="button button-primary" href="https://github.com/BlakePember/tab-group-expander" target="_blank" rel="noopener noreferrer">View on GitHub <span aria-hidden="true">↗</span></a>
+                    <!-- TODO: Replace this disabled badge with the live Chrome Web Store link once Google approves the listing:
+                    <a class="button button-secondary" href="https://chromewebstore.google.com/detail/YOUR-EXTENSION-ID" target="_blank" rel="noopener noreferrer">Chrome Web Store <span aria-hidden="true">↗</span></a>
+                    -->
+                    <span class="button button-disabled" aria-disabled="true" title="Pending Chrome Web Store review">Chrome Web Store (Pending Review)</span>
+                </div>
+            </div>
+
+            <figure class="project-preview-figure">
+                <div class="project-preview-frame">
+                    <!-- TODO: Optional — replace the CSS mockup below with a 1280x800 (16:10) screenshot saved at images/tab-group-expander-preview.png:
+                    <img class="project-preview-img" src="../images/tab-group-expander-preview.png" alt="TabGroup Expander Chrome Side Panel showing interactive tab group border drag handles" width="1280" height="800">
+                    -->
+                    <div class="tge-mockup" role="img" aria-label="Mockup of Chrome with TabGroup Expander Side Panel showing a Work tab group with a draggable bottom border expanding into an adjacent tab">
+                        <div class="tge-chrome-bar">
+                            <span class="tge-window-dots" aria-hidden="true"><i></i><i></i><i></i></span>
+                            <div class="tge-tabbar">
+                                <span class="tge-bar-tab tge-bar-pinned" title="Pinned"></span>
+                                <span class="tge-bar-group">
+                                    <span class="tge-bar-pill">Work</span>
+                                    <span class="tge-bar-tab">Docs</span>
+                                    <span class="tge-bar-tab is-active">PR #42</span>
+                                </span>
+                                <span class="tge-bar-tab tge-bar-next">API Spec</span>
+                                <span class="tge-bar-tab">Notes</span>
+                            </div>
+                        </div>
+
+                        <div class="tge-chrome-body">
+                            <div class="tge-canvas">
+                                <span class="tge-canvas-eyebrow">GLOBAL SHORTCUTS</span>
+                                <div class="tge-shortcut-list">
+                                    <div class="tge-shortcut-row">
+                                        <span>Extend right</span>
+                                        <kbd>Alt+Shift+→</kbd>
+                                    </div>
+                                    <div class="tge-shortcut-row">
+                                        <span>Extend left</span>
+                                        <kbd>Alt+Shift+←</kbd>
+                                    </div>
+                                    <div class="tge-shortcut-row">
+                                        <span>Shrink right</span>
+                                        <kbd>Alt+Shift+↓</kbd>
+                                    </div>
+                                </div>
+                                <span class="tge-canvas-foot">100% local · Zero external dependencies</span>
+                            </div>
+
+                            <div class="tge-sidepanel">
+                                <div class="tge-panel-header">
+                                    <strong>TabGroup Expander</strong>
+                                    <span class="tge-live-pill">LIVE</span>
+                                </div>
+                                <div class="tge-panel-section">PINNED</div>
+                                <div class="tge-strip-row tge-strip-pinned">
+                                    <span class="tge-dot"></span><span>Mail</span>
+                                </div>
+                                <div class="tge-panel-section">TABS</div>
+                                <div class="tge-strip-group">
+                                    <div class="tge-strip-group-head">
+                                        <span class="tge-bar-pill">Work</span>
+                                        <span class="tge-strip-count">2 → 3</span>
+                                    </div>
+                                    <div class="tge-strip-row">
+                                        <span class="tge-dot"></span><span>Docs</span>
+                                    </div>
+                                    <div class="tge-strip-row is-active">
+                                        <span class="tge-dot"></span><span>PR #42</span>
+                                    </div>
+                                    <div class="tge-drag-edge">
+                                        <span>Drag border</span>
+                                    </div>
+                                </div>
+                                <div class="tge-strip-row tge-strip-preview">
+                                    <span class="tge-dot"></span><span>API Spec</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <figcaption class="project-preview-caption">Live-synced vertical tab strip in Chrome's Side Panel alongside global keyboard commands.</figcaption>
+            </figure>
+        </section>
+
+        <section class="project-highlights" aria-labelledby="highlights-title">
+            <div class="section-heading">
+                <div>
+                    <p class="eyebrow">KEY HIGHLIGHTS</p>
+                    <h2 id="highlights-title">How it works<span class="heading-period">.</span></h2>
+                </div>
+                <span class="section-count">03 FEATURES</span>
+            </div>
+
+            <div class="highlights-grid">
+                <article class="highlight-card">
+                    <span class="project-number">01</span>
+                    <h3>Keyboard-Driven Control</h3>
+                    <p>Global shortcuts (<kbd>Alt+Shift+Left/Right/Down</kbd>) to absorb adjacent tabs or shrink groups without touching the mouse, handling pinned tabs and neighboring group boundaries cleanly.</p>
+                </article>
+
+                <article class="highlight-card">
+                    <span class="project-number">02</span>
+                    <h3>Interactive Drag Side Panel</h3>
+                    <p>Built a live-synced vertical tab strip using the <code>chrome.sidePanel</code> API and pointer-capture drag handles so users can drag group borders with their mouse to update Chrome's native tab bar in real time.</p>
+                </article>
+
+                <article class="highlight-card">
+                    <span class="project-number">03</span>
+                    <h3>Privacy-First &amp; Zero Dependencies</h3>
+                    <p>Runs 100% locally using minimal permissions (<code>tabs</code>, <code>tabGroups</code>, <code>sidePanel</code>) with no external libraries or data collection.</p>
+                </article>
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer page-width">
+        <a class="wordmark footer-wordmark" href="../"><span class="wordmark-icon" aria-hidden="true">BAP</span><span>Blake Pember</span></a>
+        <div class="footer-links">
+            <a href="https://github.com/BlakePember" target="_blank" rel="noopener noreferrer">GitHub <span aria-hidden="true">↗</span></a>
+            <a href="mailto:blakeapember@gmail.com">Get in touch <span aria-hidden="true">↗</span></a>
+        </div>
+    </footer>
+
+    <script>
+        const THEME_STORAGE_KEY = "theme";
+        const themeToggle = document.getElementById("theme-toggle");
+        const themeColorMeta = document.querySelector('meta[name="theme-color"]');
+        const faviconLink = document.getElementById("favicon");
+
+        const syncThemeUI = (isDark) => {
+            themeToggle.setAttribute("aria-pressed", String(isDark));
+            themeToggle.setAttribute("aria-label", isDark ? "Switch to light theme" : "Switch to dark theme");
+            if (themeColorMeta) {
+                themeColorMeta.setAttribute("content", isDark ? "#171d19" : "#f5f5ef");
+            }
+            if (faviconLink) {
+                faviconLink.setAttribute("href", isDark ? "../images/favicon-dark.svg" : "../images/favicon.svg");
+            }
+        };
+
+        const applyTheme = (isDark) => {
+            document.documentElement.classList.toggle("dark", isDark);
+            syncThemeUI(isDark);
+        };
+
+        syncThemeUI(document.documentElement.classList.contains("dark"));
+
+        themeToggle.addEventListener("click", () => {
+            const isDark = !document.documentElement.classList.contains("dark");
+            applyTheme(isDark);
+            try {
+                localStorage.setItem(THEME_STORAGE_KEY, isDark ? "dark" : "light");
+            } catch {}
+        });
+
+        window.addEventListener("storage", (event) => {
+            if (event.key === THEME_STORAGE_KEY || event.key === null) {
+                applyTheme(event.newValue === "dark");
+            }
+        });
+    </script>
+</body>
+</html>

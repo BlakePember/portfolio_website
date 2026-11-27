@@ -4,5 +4,6 @@ Static portfolio homepage hosted on GitHub Pages at [blakepember.net](https://bl
 
 ## Projects (Separate Repositories)
 - **Duckhouse** — [BlakePember/duckhouse](https://github.com/BlakePember/duckhouse) · [duckhouse.blakepember.net](https://duckhouse.blakepember.net)
+- **TabGroup Expander** — [BlakePember/tab-group-expander](https://github.com/BlakePember/tab-group-expander) · [blakepember.net/tab-group-expander](https://blakepember.net/tab-group-expander/)
 - **Trivia** — [BlakePember/trivia](https://github.com/BlakePember/trivia) · [trivia.blakepember.net](https://trivia.blakepember.net)
 - **Fala! (Brazilian Portuguese)** — [BlakePember/fala](https://github.com/BlakePember/fala) · [fala.blakepember.net](https://fala.blakepember.net)
